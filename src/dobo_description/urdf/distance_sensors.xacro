@@ -39,7 +39,7 @@
             <render_engine>ogre2</render_engine>
         </plugin>
     </gazebo>
-       -->
+       
 
     <gazebo reference="front_tof_link" >
         <sensor name="gpu_lidar" type="gpu_lidar">
@@ -75,5 +75,5 @@
         </sensor> 
     </gazebo>
     
- 
+ -->
 </robot>
