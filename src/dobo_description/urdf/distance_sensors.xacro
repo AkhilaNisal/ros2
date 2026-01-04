@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="tof_length" value="0.01" />
+    <xacro:property name="tof_width" value="0.05" />
+    <xacro:property name="tof_heigth" value="0.05" />
+
+
+    <xacro:macro name="tof_link" params="prefix" >
+        <link name="${prefix}_tof_link" >
+            <visual>
+                <geometry>
+                    <box size="${tof_length} ${tof_width} ${tof_heigth}" />
+                </geometry>
+                <material name="orange" />
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="${tof_length} ${tof_width} ${tof_heigth}" />
+                </geometry>
+            </collision>
+
+            <xacro:box_inertia m="0.05" x="${tof_length}" y="${tof_width}" z="${tof_heigth}"
+                            o_xyz= "0 0 0" o_rpy="0 0 0" />
+        </link>
+    </xacro:macro>
+    
+    <xacro:tof_link prefix="front" />
+
+    <joint name="base_front_tof_joint" type="fixed" >
+        <parent link="base_link"/>
+        <child link="front_tof_link"/>
+        <origin xyz="${base_length / 2.0 + tof_length/2.0} 0 ${base_heigth - tof_heigth /2.0}" rpy="0 0 0" />   
+    </joint>
+<!-- 
+    <gazebo>
+        <plugin name='gz::sim::systems::Sensors' 
+            filename='gz-sim-sensors-system'>
+            <render_engine>ogre2</render_engine>
+        </plugin>
+    </gazebo>
+       -->
+
+    <gazebo reference="front_tof_link" >
+        <sensor name="gpu_lidar" type="gpu_lidar">
+            <pose>1 0 0 0 0 0 </pose>
+            <topic>scan</topic>
+            <update_rate>20</update_rate>
+
+            <lidar>
+                <scan>
+                    <horizontal>
+                        <samples>720</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-3.14</min_angle>
+                        <max_angle>3.14</max_angle>
+                    </horizontal>
+                </scan>
+
+                <range>
+                    <min>0.01</min>
+                    <max>12.0</max>
+                    <resolution>0.005</resolution>
+                </range>
+
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.001</stddev>
+                </noise>
+            </lidar>                
+
+            <always_on>1</always_on>
+            <visualize>1</visualize>
+        </sensor> 
+    </gazebo>
+    
+ 
+</robot>
