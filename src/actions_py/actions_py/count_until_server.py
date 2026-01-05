@@ -54,6 +54,8 @@ class CountUntilServerNode(Node):
         self.get_logger().info("Accepting a goal")
         return GoalResponse.ACCEPT
     
+    #Policy : goal queue
+
     def handle_accepted_callback(self, goal_handle: ServerGoalHandle):
         with self.goal_lock_:
             if self.goal_handle_ is not None:
