@@ -1,0 +1,11 @@
+<library path="dobo_controllers">
+    <class  name="dobo_controller/DoboController"
+            type="dobo_controller::DoboController"
+            base_class_type="controller_interface::ControllerInterface">
+
+        <description>
+            Forward joint commands with a complementary filter
+        </description>
+    </class>
+
+</library>

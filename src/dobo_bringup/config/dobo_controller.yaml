@@ -8,6 +8,12 @@ controller_manager:
     diff_drive_controller:
       type: diff_drive_controller/DiffDriveController
 
+    arm_joints_controller:
+      type: forward_command_controller/ForwardCommandController
+
+    dobo_arm_controller:
+      type: dobo_controller/DoboController
+
 diff_drive_controller:
   ros__parameters:
     left_wheel_names: ["base_left_wheel_joint"]
@@ -29,3 +35,15 @@ diff_drive_controller:
     linear.x.min_velocity: -1.0
     angular.z.max_velocity: 1.0
     angular.z.min_velocity: -1.0
+
+
+arm_joints_controller:
+  ros__parameters:
+    joints: ["arm_base_forearm_joint", "forearm_hand_joint"]
+    interface_name: "position"
+
+dobo_arm_controller:
+  ros__parameters:
+    joints: ["arm_base_forearm_joint", "forearm_hand_joint"]
+    interface_name: "position"
+    coefficient: 0.05
