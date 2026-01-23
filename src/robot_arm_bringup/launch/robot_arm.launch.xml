@@ -4,10 +4,12 @@
     
    <let name="rviz_config_path"
          value="$(find-pkg-share robot_arm_bringup)/config/my_arm_moveit.rviz"/>
+    
+    <arg name="use_mock_component" default="true" />
 
     <node pkg="robot_state_publisher" exec="robot_state_publisher" >
         <param name="robot_description"
-            value="$(command 'xacro $(var urdf_path)')" />
+            value="$(command 'xacro $(var urdf_path) use_mock_component:=$(var use_mock_component)')" />
     </node>
 
 
