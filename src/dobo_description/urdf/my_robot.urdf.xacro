@@ -3,8 +3,8 @@
 
     <xacro:include filename="common_properties.xacro" />
     <xacro:include filename="mobile_base.xacro" />
-    <xacro:include filename="mobile_base.ros2_control.xacro" />
 
+    <!-- <xacro:include filename="mobile_base.ros2_control.xacro" />
     <xacro:include filename="arm.xacro" />
     <joint name="mobile_base_arm_joint" type="fixed">
         <parent link="base_link" />
@@ -13,8 +13,9 @@
     </joint>
 
   <xacro:include filename="arm.ros2_control.xacro" />
+    <xacro:include filename="camera.xacro" />
 
-  <!--  
+    -->
     <xacro:include filename="mobile_base_gazebo.xacro" />
     <xacro:include filename="arm.xacro" />
     <xacro:include filename="arm_gazebo.xacro"/>
@@ -26,5 +27,5 @@
         <child link="arm_base_link"/>
         <origin xyz="${base_length /3.0} 0 ${base_heigth}" rpy="0 0 0" />
     </joint>
-    -->
+   
 </robot> 
