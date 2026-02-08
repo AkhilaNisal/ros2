@@ -89,9 +89,9 @@ hardware_interface::return_type ArduinoArmHardwareInterface::write(
         hw_commands_[i] = cmd;
 
         // -------- DEBUG: print received command --------
-        RCLCPP_INFO(rclcpp::get_logger("ArduinoArmHardware"), 
-                    "Received command from MoveIt: Joint %s -> %f", 
-                    joint_names_[i].c_str(), hw_commands_[i]);
+        // RCLCPP_INFO(rclcpp::get_logger("ArduinoArmHardware"), 
+        //             "Received command from MoveIt: Joint %s -> %f", 
+        //             joint_names_[i].c_str(), hw_commands_[i]);
     }
 
     // Send to Arduino
@@ -130,6 +130,8 @@ ArduinoArmHardwareInterface::read(const rclcpp::Time &, const rclcpp::Duration &
 
     return hardware_interface::return_type::OK;
   }
+
+
 
   std::string line = read_serial();
 

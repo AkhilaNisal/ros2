@@ -213,10 +213,10 @@
     <child
       link="arm2_link" />
     <axis
-      xyz="-1 0 0" />
+      xyz="1 0 0" />
     <limit
-      lower="-1.57"
-      upper="1.57"
+      lower="-1.572"
+      upper="1.572"
       effort="300"
       velocity="2" />
   </joint>

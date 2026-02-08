@@ -1,5 +1,8 @@
 #include <rclcpp/rclcpp.hpp>
 #include <moveit/move_group_interface/move_group_interface.hpp>
+#include <chrono>
+using namespace std::chrono_literals;
+
 
 int main(int argc, char **argv)
 {
@@ -11,20 +14,21 @@ int main(int argc, char **argv)
     auto spinner = std::thread([&executor]() { executor.spin(); });
 
     auto arm = moveit::planning_interface::MoveGroupInterface(node, "arm");
-    arm.setMaxVelocityScalingFactor(1.0);
-    arm.setMaxAccelerationScalingFactor(1.0);
+    arm.setMaxVelocityScalingFactor(0.5);
+    arm.setMaxAccelerationScalingFactor(0.3);
 
     auto gripper = moveit::planning_interface::MoveGroupInterface(node, "gripper");
 
     // // Named goal
-
-    // arm.setStartStateToCurrentState();
-    // arm.setNamedTarget("pose_1");
-    // moveit::planning_interface::MoveGroupInterface::Plan plan1;
-    // bool success1 = (arm.plan(plan1) == moveit::core::MoveItErrorCode::SUCCESS);
-    // if (success1) {
-    //     arm.execute(plan1);
-    // }
+    
+    arm.setStartStateToCurrentState();
+    arm.setNamedTarget("pose1");
+    moveit::planning_interface::MoveGroupInterface::Plan plan1;
+    bool success1 = (arm.plan(plan1) == moveit::core::MoveItErrorCode::SUCCESS);
+    if (success1) {
+        arm.execute(plan1);
+        rclcpp::sleep_for(2s);   // 2 seconds delay
+    }
     // //--------------------------------
     // gripper.setStartStateToCurrentState();
     // gripper.setNamedTarget("gripper_close");
@@ -34,13 +38,14 @@ int main(int argc, char **argv)
     //     gripper.execute(plan3);
     // }
     // //---------------------------------
-    // arm.setStartStateToCurrentState();
-    // arm.setNamedTarget("home");  
-    // moveit::planning_interface::MoveGroupInterface::Plan plan2;
-    // bool success2 = (arm.plan(plan2) == moveit::core::MoveItErrorCode::SUCCESS);
-    // if (success2) {
-    //     arm.execute(plan2);
-    // }
+
+    arm.setStartStateToCurrentState();
+    arm.setNamedTarget("home");  
+    moveit::planning_interface::MoveGroupInterface::Plan plan2;
+    bool success2 = (arm.plan(plan2) == moveit::core::MoveItErrorCode::SUCCESS);
+    if (success2) {
+        arm.execute(plan2);
+    }
 
     // //--------------------------------
     // gripper.setStartStateToCurrentState();
@@ -71,51 +76,51 @@ int main(int argc, char **argv)
 
     // Pose Goal
 
-    tf2::Quaternion q;
-    q.setRPY(3.14, 0.0, 0.0);
-    q = q.normalize();
+    // tf2::Quaternion q;
+    // q.setRPY(3.14, 0.0, 0.0);
+    // q = q.normalize();
 
-    geometry_msgs::msg::PoseStamped target_pose;
-    target_pose.header.frame_id = "base_link";
-    target_pose.pose.position.x = 0.7;
-    target_pose.pose.position.y = 0.0;
-    target_pose.pose.position.z = 0.4;
-    target_pose.pose.orientation.x = q.getX();
-    target_pose.pose.orientation.y = q.getY();
-    target_pose.pose.orientation.z = q.getZ();
-    target_pose.pose.orientation.w = q.getW();
+    // geometry_msgs::msg::PoseStamped target_pose;
+    // target_pose.header.frame_id = "base_link";
+    // target_pose.pose.position.x = 0.1;
+    // target_pose.pose.position.y = 0.0;
+    // target_pose.pose.position.z = 0.0;
+    // target_pose.pose.orientation.x = q.getX();
+    // target_pose.pose.orientation.y = q.getY();
+    // target_pose.pose.orientation.z = q.getZ();
+    // target_pose.pose.orientation.w = q.getW();
 
-    arm.setStartStateToCurrentState();
-    arm.setPoseTarget(target_pose);
+    // arm.setStartStateToCurrentState();
+    // arm.setPoseTarget(target_pose);
 
-    moveit::planning_interface::MoveGroupInterface::Plan plan1;
-    bool success1 = (arm.plan(plan1) == moveit::core::MoveItErrorCode::SUCCESS);
+    // moveit::planning_interface::MoveGroupInterface::Plan plan1;
+    // bool success1 = (arm.plan(plan1) == moveit::core::MoveItErrorCode::SUCCESS);
 
-    if (success1) {
-        arm.execute(plan1);
-    }
+    // if (success1) {
+    //     arm.execute(plan1);
+    // }
 
     // Cartesian Path
 
-    std::vector<geometry_msgs::msg::Pose> waypoints;
-    geometry_msgs::msg::Pose pose1 = arm.getCurrentPose().pose;
-    pose1.position.z += -0.2;
-    waypoints.push_back(pose1);
-    geometry_msgs::msg::Pose pose2 = pose1;
-    pose2.position.y += 0.2;
-    waypoints.push_back(pose2); 
-    geometry_msgs::msg::Pose pose3 = pose2;
-    pose3.position.y += -0.2;
-    pose3.position.z += 0.2;
-    waypoints.push_back(pose3);
+    // std::vector<geometry_msgs::msg::Pose> waypoints;
+    // geometry_msgs::msg::Pose pose1 = arm.getCurrentPose().pose;
+    // pose1.position.z += -0.2;
+    // waypoints.push_back(pose1);
+    // geometry_msgs::msg::Pose pose2 = pose1;
+    // pose2.position.y += 0.2;
+    // waypoints.push_back(pose2); 
+    // geometry_msgs::msg::Pose pose3 = pose2;
+    // pose3.position.y += -0.2;
+    // pose3.position.z += 0.2;
+    // waypoints.push_back(pose3);
 
-    moveit_msgs::msg::RobotTrajectory trajectory;
+    // moveit_msgs::msg::RobotTrajectory trajectory;
 
-    double fraction = arm.computeCartesianPath(waypoints, 0.01, trajectory);
+    // double fraction = arm.computeCartesianPath(waypoints, 0.01, trajectory);
 
-    if (fraction == 1) {
-        arm.execute(trajectory);
-    }
+    // if (fraction == 1) {
+    //     arm.execute(trajectory);
+    // }
 
     rclcpp::shutdown();
     spinner.join();

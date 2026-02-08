@@ -20,7 +20,7 @@ arm_controller:
       - base_rotating_waste_joint
       - rotating_waste_arm1_joint
       - arm1_arm2_joint
-      - arm2_gripper_base_joint
+      - arm2_gripper_base_joint 
     command_interfaces:
       - position
     state_interfaces:
